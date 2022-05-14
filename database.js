@@ -14,6 +14,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
             "GoodsID" INTEGER PRIMARY KEY AUTOINCREMENT,
             "SellerID" INT,
             "Name" TEXT,
+            "Description" TEXT,
             "Seller" TEXT,
             "Price" TEXT,
             "Zipcode" INT
@@ -24,13 +25,14 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
                     //console.log(err);
                 } else {
                     // Table just created, creating some rows
-                    var insert = 'INSERT INTO bakedgoodsdata (GoodsID,SellerID,Name,Seller,Price,Zipcode) VALUES (?,?,?,?,?,?)';
-                    db.run(insert, [null,'101', 'Chocolate Cupcakes', 'Kate S', '1.25', '11223'])
-                    db.run(insert, [null, '102', 'Red Velvet Cupcakes', 'Elaine R', '1.50', '11223'])
-                    db.run(insert, [null, '103', 'Sugar Cookies', 'James T', '0.99', '11223'])
-                    db.run(insert, [null, '103', 'Cinnamum Buns', 'Amy R', '2.25', '11223'])
-                    db.run(insert, [null, '103', 'Reeses Cups', 'Sarah P', '1.75', '11223'])
-                    db.run(insert, [null, '103', 'Strawberry Cheesecake', 'Claire S', '7.95', '11223'])
+                    var insert = 'INSERT INTO bakedgoodsdata (GoodsID,SellerID,Name,Description,Seller,Price,Zipcode) VALUES (?,?,?,?,?,?,?)';
+
+                    db.run(insert, [20,'101', 'Chocolate Cupcakes', 'description', 'Kate S', '1.25', '11223'])
+                    db.run(insert, [21, '102', 'Red Velvet Cupcakes', 'description','Elaine R', '1.50', '11223'])
+                    db.run(insert, [22, '103', 'Sugar Cookies', 'description', 'James T', '0.99', '11223'])
+                    db.run(insert, [23, '103', 'Cinnamum Buns', 'description', 'Amy R', '2.25', '11223'])
+                    db.run(insert, [24, '103', 'Reeses Cups', 'description','Sarah P', '1.75', '11223'])
+                    db.run(insert, [25, '103', 'Strawberry Cheesecake', 'description','Claire S', '7.95', '11223'])
                 }
             })
         db.run(`CREATE TABLE userdata(

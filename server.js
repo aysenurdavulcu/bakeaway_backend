@@ -112,5 +112,49 @@ app.post("/api/allUsers", (req, res, next) => {
         })
     });
 })
+app.post("/api/addProduct", (req, res, next) => {
+    var errors = []
+    if (!req.body.sellerID) {
+        errors.push("No seller id provided");
+    } 
+    if (!req.body.productName) {
+        errors.push("No product name provided");
+    } 
+    if (!req.body.description) {
+        errors.push("No description provided");
+    } 
+    if (!req.body.price) {
+        errors.push("No price provided");
+    } 
+    if (!req.body.zipcode) {
+        errors.push("No zipcode provided");
+    } 
+    if (errors.length) {
+        res.status(400).json({ "error": errors.join(",") });
+        return;
+    }
+    var data = {
+        goodsID: Date.now(),
+        sellerID: req.body.sellerID,
+        sellerName: req.body.sellerName,
+        productName: req.body.productName,
+        description: req.body.description,
+        price: req.body.price,
+        zipcode: req.body.zipcode,
+    }
+    var sql = 'INSERT INTO bakedgoodsdata (GoodsID,SellerID,Name,Description,Seller,Price,Zipcode) VALUES (?,?,?,?,?,?,?)';
+    var params = [data.goodsID,data.sellerID,data.productName,data.description,data.sellerName,data.price,data.zipcode]
+    db.run(sql, params, function (err, result) {
+        if (err) {
+            res.status(400).json({ "error": err.message })
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": data,
+            "id": this.lastID
+        })
+    });
+})
 
 app.listen(port);
