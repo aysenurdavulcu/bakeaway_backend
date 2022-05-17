@@ -47,6 +47,20 @@ app.get("/api/allGoods/zipcode/:zipcode", (req, res, next) => {
         })
     });
 });
+app.get("/api/allGoods/sellerid/:sellerid", (req, res, next) => {
+    var sql = "select * from bakedgoodsdata where SellerID = ?"
+    var params = [req.params.sellerid]
+    db.all(sql, params, (err, rows) => {
+        if (err) {
+            res.status(400).json({ "error": err.message });
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": rows
+        })
+    });
+});
 //temporary
 app.get("/api/allUsers", (req, res, next) => {
     var sql = "select * from userdata"
@@ -62,6 +76,7 @@ app.get("/api/allUsers", (req, res, next) => {
         })
     });
 });
+
 
 app.get("/api/allUsers/:username/:password", (req, res, next) => {
     var sql = "select * from userdata where (username,password) = (?,?)"
@@ -156,5 +171,19 @@ app.post("/api/addProduct", (req, res, next) => {
         })
     });
 })
+app.delete("/api/removeItem/goodsID/:goodsid", (req, res, next) => {
+    db.run(
+        'DELETE FROM bakedgoodsdata WHERE GoodsID = ?',
+        req.params.goodsid, 
+        function (err, result){
+            if(err) {
+                res.status(400).json({"error": res.message})
+                console.log(err);
+                return;
+                
+            }
+            res.status(200).json({"message": "deleted", changes: this.changes})
 
+        });
+})
 app.listen(port);
